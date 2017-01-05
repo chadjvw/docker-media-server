@@ -1,0 +1,67 @@
+version: "2" 
+
+services:
+  sonarr:
+    build: ./sonarr
+    environment:
+      - SUID=584
+      - MGUID=3864
+    restart: always
+    volumes:
+      - /opt/sonarr:/home/sonarr/.config/NzbDrone
+      - /media/TV:/tv 
+      - /media/Downloads:/downloads
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8989:8989"
+    links:
+      - plex
+
+  plex:
+    build: ./plex
+    environment:
+      - PUID=582
+      - MGUID=3864
+    restart: always
+    volumes:
+      - /opt/plex:/config
+      - /media:/media
+    ports:
+      - "32400:32400"
+      - "1900:1900/udp"
+      - "3005:3005"
+      - "5353:5353/udp"
+      - "8324:8324"
+      - "32410:32410/udp"
+      - "32412:32412/udp"
+      - "32413:32413/udp"
+      - "32414:32414/udp"
+      - "32469:32469"
+
+  qbittorrent:
+    build: ./qbittorrent
+    environment:
+      - QUID=583
+      - MGUID=3864
+    restart: always
+    volumes:
+      - /opt/qBittorrent:/config
+      - /media/Downloads:/downloads
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "6881:6881"
+      - "6881:6881/udp"
+      - "9091:9091"
+    links:
+      - sonarr
+
+  flexget:
+    build: ./flexget
+    environment:
+      - FUID=585
+      - MGUID=3864
+    restart: always
+    volumes:
+      - /opt/flexget:/config
+      - /media:/data
+
