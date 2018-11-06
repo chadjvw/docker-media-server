@@ -1,4 +1,4 @@
-FROM ubuntu:16.04 
+FROM ubuntu:16.10
 
 ENV DEBIAN_FRONTEND noninteractive MGUID 3864 CUID 585
 
